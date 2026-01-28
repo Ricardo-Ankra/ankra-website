@@ -42,11 +42,10 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Add .nojekyll file
-        run: touch ./out/.nojekyll
-
-      - name: Add CNAME for custom domain
-        run: echo "www.ankra.solutions" > ./out/CNAME
+      - name: Add .nojekyll and CNAME files
+        run: |
+          touch ./out/.nojekyll
+          echo "www.ankra.solutions" > ./out/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
