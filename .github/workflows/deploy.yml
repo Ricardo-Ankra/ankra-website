@@ -31,33 +31,36 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          static_site_generator: next
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js site
+      - name: Verify Next.js config
+        run: |
+          echo "=== next.config.ts content ==="
+          cat next.config.ts
+          echo ""
+          echo "=== Next.js version ==="
+          npm list next
+
+      - name: Build with static export
         run: npm run build
         env:
           NODE_ENV: production
 
-      - name: Check what was built
+      - name: Verify out directory was created
         run: |
-          echo "=== Checking for output directories ==="
-          ls -la
-          echo "=== Checking if ./out exists ==="
-          if [ -d "./out" ]; then
-            echo "✓ ./out directory exists"
-            ls -la ./out
-          else
-            echo "✗ ./out directory does NOT exist"
+          if [ ! -d "./out" ]; then
+            echo "ERROR: ./out directory was not created"
+            echo "Checking build output..."
+            ls -la
+            if [ -d "./.next" ]; then
+              echo ".next exists but out does not - export may have failed"
+            fi
+            exit 1
           fi
-          echo "=== Checking if ./.next exists ==="
-          if [ -d "./.next" ]; then
-            echo "✓ ./.next directory exists"
-            ls -la ./.next
-          fi
+          echo "Success: ./out directory exists"
+          ls -la ./out
 
       - name: Add .nojekyll and CNAME files
         run: |
