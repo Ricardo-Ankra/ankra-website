@@ -3,7 +3,7 @@ name: Deploy Ankra website to GitHub Pages
 on:
   push:
     branches:
-      - main      # deploy when you push to main
+      - main      
   workflow_dispatch: # allow manual runs
 
 permissions:
