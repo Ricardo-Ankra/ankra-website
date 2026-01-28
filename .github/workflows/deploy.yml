@@ -3,8 +3,8 @@ name: Deploy Ankra website to GitHub Pages
 on:
   push:
     branches:
-      - main      
-  workflow_dispatch: # allow manual runs
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,13 +34,11 @@ jobs:
 
       - name: Build and export static Next.js site
         run: npm run build
-        # assumes next.config.ts has: output: 'export'
-        # and that Next.js exports to ./out
 
       - name: Add CNAME for custom domain
         run: echo "www.ankra.solutions" > ./out/CNAME
 
-      - name: Upload artifact to GitHub Pages
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
