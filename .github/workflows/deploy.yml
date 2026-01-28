@@ -42,6 +42,23 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Check what was built
+        run: |
+          echo "=== Checking for output directories ==="
+          ls -la
+          echo "=== Checking if ./out exists ==="
+          if [ -d "./out" ]; then
+            echo "✓ ./out directory exists"
+            ls -la ./out
+          else
+            echo "✗ ./out directory does NOT exist"
+          fi
+          echo "=== Checking if ./.next exists ==="
+          if [ -d "./.next" ]; then
+            echo "✓ ./.next directory exists"
+            ls -la ./.next
+          fi
+
       - name: Add .nojekyll and CNAME files
         run: |
           touch ./out/.nojekyll
